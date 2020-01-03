@@ -128,6 +128,19 @@ const people = [
 // forEach 與 map
 // 將所有物件增加 icash 有多少金額的欄位
 
+var newPeople = people.forEach(function(item,index){
+  item.icash = item.money +500;
+  console.log(item);
+  
+})
+
+var newMap = people.map(function(item,index){
+  return item.icash+100;
+  console.log(item); //不會執行
+  
+})
+console.log(newMap);
+
 
 // filter
 // 挑出金額少於 5000 的物件
