@@ -119,46 +119,117 @@ const people = [
     name: '杰倫',
     money: 60000
   },
-  {
-    name: '老媽',
-    money: Infinity
-  }
+  // {
+  //   name: '老媽',
+  //   money: Infinity
+  // }
 ];
 
 // forEach 與 map
 // 將所有物件增加 icash 有多少金額的欄位
 
-var newPeople = people.forEach(function(item,index){
+
+// =============forEach====================================
+// for(let i=0; i<people.length; i++){
+//   people[i].icash = people[i].item+500;
+// }
+people.forEach(function(item,index){
   item.icash = item.money +500;
   console.log(item);
   
 })
 
+// ===========map=============================================
 var newMap = people.map(function(item,index){
   return item.icash+100;
   console.log(item); //不會執行
   
 })
-console.log(newMap);
+console.log(newMap);//只會得到一個 [1100 3600 60600 Infinity]的陣列
+// ----------
+var newPeople = people.map(function(item,index){
+  return{
+    ...item,
+    icash:item.money+500
+  }
+})
+console.log(newPeople);
 
 
+// =========filter 适合有判断是的================
 // filter
 // 挑出金額少於 5000 的物件
+
+var filterPeople = people.filter(function(item,index){
+
+  return (item.money<5000)
+
+})
+
+console.log(filterPeople);
+
 
 // find
 // 1. 找到金額 = 500 的物件
 // 2. 找到 > 5000 的物件
 
+// var newFind = people.find(function(item,index){
+//   return item.money == 500;
+// })
+// console.log(newFind);
+
+var findPeople = people.find(function(item,index){
+    return item.money > 5000;
+})
+console.log(findPeople);
+
+// if return return true
+
 // every
 // 1. 所有物件是否都超過 10000 元
 // 2. 是否所有物件超過 300 元
+
 
 // some
 // 1. 是否有物件超過 10000 元
 // 2. 是否有物件持有金額少於 300元
 
+// =================reduce============================
 // reduce
-// 去除掉老媽，請問剩下的人有多少錢？
+// 去除掉老媽，請問剩下的人有多少錢？(加總 根比大小)
+
+// var newNumber = people.reduce(function(prev,item,index){return perv},0);
+
+
+//加總
+const newNumber = people.reduce(function(total,item,index){
+      if(item.name!="老媽"){
+        total+=item.money;
+      }
+      return total;//return不能放在if里面
+},0)
+
+console.log(newNumber);
+
+//找出最大的錢
+// 下面这个不行 会undefined
+// const maxNumber = people.reduce(function(prev,item,index){
+//       if(item.name!="老媽"){
+//         return Math.max(prev,item.money)
+//       }
+// },0)
+const maxNumber = people.reduce(function(prev,item,index){
+    if(item.name!="老媽"){
+       prev = Math.max(prev,item.money)
+    }
+    return prev;
+  },0)
+
+console.log(maxNumber);
+
+
+
+
 
 </script> 
         </div>
