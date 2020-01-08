@@ -144,17 +144,28 @@
   </ol>
 </div>
 
+<!-- m資料  v試圖 e事件 -->
+<!-- 01建立代辦事項資料 -->
+<!-- 02刪除陣列上的特性資料 -->
+<!-- 03返回頁籤篩選功能 -->
+<!-- 04修改資料內容 -->
+<!-- 05換你來試試看 -->
+
 
 <div id="app">
+
+  <!-- --------輸入---------------- -->
   <div class="input-group mb-3">
     <div class="input-group-prepend">
       <span class="input-group-text" id="basic-addon1">待辦事項</span>
     </div>
-    <input type="text" class="form-control" placeholder="準備要做的任務">
+    <input type="text" class="form-control" placeholder="準備要做的任務" v-model="newTodo">
     <div class="input-group-append">
-      <button class="btn btn-primary" type="button">新增</button>
+      <button class="btn btn-primary" type="button" @click="addTodo">新增</button>
     </div>
   </div>
+
+
   <div class="card text-center">
     <div class="card-header">
       <ul class="nav nav-tabs card-header-tabs">
@@ -169,8 +180,10 @@
         </li>
       </ul>
     </div>
+
+
     <ul class="list-group list-group-flush text-left">
-      <li class="list-group-item">
+      <!-- <li class="list-group-item" v-for="(item,key) in filteredTodos">
         <div class="d-flex">
           <div class="form-check">
             <input type="checkbox" class="form-check-input" id="a1">
@@ -182,23 +195,33 @@
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-      </li>
-      <li class="list-group-item">
+      </li> -->
+
+      <li class="list-group-item" v-for="(item,key) in todos">
         <div class="d-flex">
           <div class="form-check">
-            <input type="checkbox" class="form-check-input" id="a1">
-            <label class="form-check-label completed" for="a1">
-              Cras justo odio
+            <input type="checkbox" class="form-check-input" :id="item.id">
+            <label class="form-check-label completed" 
+            :for="item.id"
+            :class="{'completed':item.completed}"
+            >
+              <!-- Cras justo odio -->
+              {{item.title}}
             </label>
           </div>
-          <button type="button" class="close ml-auto" aria-label="Close">
+
+          <button type="button" class="close ml-auto" aria-label="Close" @click='romoveTodo(item)'>
             <span aria-hidden="true">&times;</span>
           </button>
-        </div>
-      </li>
-      <li class="list-group-item">
+        </div> 
+        <!-- 修改 -->
         <input type="text" class="form-control">
       </li>
+
+      <!-- 修改 -->
+      <!-- <li class="list-group-item"> -->
+      </li>
+
     </ul>
     <div class="card-footer d-flex justify-content-between">
       <span>還有 3 筆任務未完成</span>
@@ -207,10 +230,41 @@
   </div>
 </div>
 
+<script src='https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.10/vue.common.dev.js'></script>
 <script>
 var app = new Vue({
   el: '#app',
-  data: {},
+  data: {
+    newTodo:'',
+    todos:[
+      {
+        id:1,
+        title:"test",
+        completed:false, 
+      }
+    ],
+  },
+  methods:{
+    addTodo:function(){
+        let value = this.newTodo.trim();
+
+        if(!value){
+           return;
+        }
+
+        let timestamp = Math.floor(Date.now())
+        
+
+        this.todos.push({
+            id:timestamp, 
+            title:value,
+            completed:false
+        });
+    },
+    removeTodo:function(item){
+      this.todos.forEach)
+    }
+  }
 });
 </script>
 

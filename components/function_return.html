@@ -116,7 +116,11 @@
           
 <div class="alert alert-secondary">
   <ol class="mb-0">
-    <li>修正計數器所產生的錯誤</li>
+    <li>修正計數器所產生的錯誤
+      <ul>
+        <li>子組件可以有自己的資料 相對獨立</li>
+      </ul>
+    </li>
   </ol>
 </div>
 
@@ -134,8 +138,13 @@
 
 <script>
 Vue.component('counter-component', {
-  data: {
-    counter: 0
+  // data: {
+  //   counter: 0
+  // },
+  data:function(){
+    return{
+      counter:0
+    }
   },
   template: '#counter-component'
 })
