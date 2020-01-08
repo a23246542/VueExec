@@ -122,22 +122,43 @@
 
 <div id="app">
   <h2>沒有插槽可替換的狀態</h2>
-  <no-slot-component></no-slot-component>
+  <no-slot-component>
+   
+  </no-slot-component>
 
+  <!-- =================================================== -->
   <h2>Slot 基礎範例</h2>
   <single-slot-component>
-    <p>使用這段取代原本的 Slot。</p>
+     <p>模板內我自己加的東西會完全被替換掉</p>
+     <p>1.狀況1單純要組件新增內容 加個slot空標籤就好</p>
   </single-slot-component>
+
+  <single-slot-component>
+    <!-- 狀況1 -->
+    <!-- <p>我單純要追加入這段slot</p> -->
+
+    <!-- 狀況2 -->
+     <p>我要替換原本內容成這一段slot</p>
+  </single-slot-component>
+
+
+  <!-- ===================================== -->
+  <!-- 要用多個插槽的時候 就用具名插槽 -->
+  <!-- 1.標籤也要替換 就直接給<header> -->
+  <!-- 2.如果想要跟slot標籤依樣不顯示多的標籤 就用template標遷 -->
 
   <h2>具名插槽</h2>
   <named-slot-component>
   </named-slot-component>
 
   <named-slot-component>
-    <header>替換的 Header</header>
-    <template>替換的 Footer</template>
-    <template>按鈕內容</template>
-    <p>其餘的內容</p>
+    <header slot="head">要用多個插槽的時候 就用具名插槽</header>
+    <template slot="foot">替換的 Footer</template>
+    <template slot="btn">按鈕內容</template>
+    <p slot="content">
+      1.標籤也要替換 就直接給header標籤<br>
+      2.如果想要跟slot標籤依樣不顯示多的標籤 就用template標籤
+    </p>
   </named-slot-component>
 </div>
 
@@ -153,13 +174,53 @@
 <script type="text/x-template" id="singleSlotComponent">
 <div class="alert alert-warning">
   <h6>我是一個元件</h6>
+  <!-- =======1.狀況1單純要組件新增內容 加個slot空標籤就好==== -->
+<!--   
   <div>
     如果沒有內容，則會顯示此段落。
   </div>
+  <slot>
+    加入的p會被放進去
+  </slot> -->
+
+   <!-- ========2.狀況2 組件裡面的內容要替換掉 把div替換成slot標籤 -->
+  <!-- <div>
+    如果沒有內容，預設顯示此段落。
+  </div> -->
+  <slot>
+    如果沒有替換內容 預設顯示此段亂(純文字節點沒有div)
+  </slot>
+
 </div>
 </script>
 
 <script type="text/x-template" id="namedSlotComponent">
+    <div class="card my-3">
+      <div class="card-header">
+        <!-- <div>這段是預設的文字</div> -->
+        <slot name="head"></slot>
+      </div>
+      <div class="card-body">
+        
+          <h5 class="card-title">Special title treatment</h5>
+          <slot name="content" class="card-text">With supporting text below as a natural lead-in to additional content.</slot>
+        
+        <a href="#" class="btn btn-primary">
+          <div>
+            <slot name="btn">spanGo somewhere</slot>
+          </div>
+        </a>
+      </div>
+      <div class="card-footer">
+        <div>
+          <slot name="foot">這是預設的 Footer</slot>
+        </div>
+      </div>
+    </div>
+
+</script>
+<!-- 複製了一段原本的範例 -->
+<!-- <script type="text/x-template" id="namedSlotComponent">
 <div class="card my-3">
   <div class="card-header">
     <div>這段是預設的文字</div>
@@ -177,7 +238,8 @@
     <div>這是預設的 Footer</div>
   </div>
 </div>
-</script>
+
+</script> -->
 
 <script>
 Vue.component('no-slot-component', {
