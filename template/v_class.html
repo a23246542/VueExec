@@ -109,43 +109,85 @@
 </div>
 
 <div id="app">
-  <h4>物件寫法</h4>
-  <div class="box"></div>
+  <h4>物件寫法  臨時方便的寫法</h4>
+  <!-- <div class="box" :class="rotate" ></div> 這樣寫無用!! -->
+  <!-- <div :class="box rotate" ></div> data讀不到 -->
+
+  <!-- 老師說依樣是可以傳入物件的方式 來操作他-->
+  <div class="box" :class="{'rotate':isTransform,'red-box':boxColor}"></div>
   <p>請為此元素加上動態 className</p>
   <hr>
-  <button class="btn btn-outline-primary" v-on:click="isTransform = !isTransform">選轉物件</button>
+  <button class="btn btn-outline-primary"
+   v-on:click="isTransform = !isTransform"
+   >選轉物件</button>
   <div class="form-check">
-    <input type="checkbox" class="form-check-input" id="classToggle1" v-model="boxColor">
+    <input type="checkbox" class="form-check-input" id="classToggle1" 
+    v-model="boxColor"
+    @click="boxColor=!boxColor"
+    >
     <label class="form-check-label" for="classToggle1">切換色彩</label>
   </div>
   <hr>
-  <h5>物件寫法 2</h5>
-  <div class="box"></div>
+
+  <!-- ============================================================================== -->
+  <h5>物件寫法 2 !!!!才是vue常用的</h5>
+  <!-- 旺季!!! -->
+  <!-- <div class="box" :style=objectClass.rotate;></div> 錯 -->
+  <!-- <div class="box" :style=boxClass></div> 寫成style -->
+  <div class="box" :class=boxClass></div>
   <p>請將此範例改為 "物件" 寫法</p>
   <hr>
-  <button class="btn btn-outline-primary">選轉物件</button>
+  <button class="btn btn-outline-primary"
+
+  @click="boxClass.rotate=!boxClass.rotate"
+
+  >選轉物件</button>
   <div class="form-check">
-    <input type="checkbox" class="form-check-input" id="classToggle2">
+    <input type="checkbox" class="form-check-input" id="classToggle2"
+
+    v-model="boxClass['bg-danger']" 
+
+    >
+    <!-- boxClass.bg-danger會報錯!!!! -->
     <label class="form-check-label" for="classToggle2">切換色彩</label>
   </div>
   <hr>
+
+
+<!-- 適合class name長度比較不確定的  不適合用true false比較適合用陣列的方式去插入-->
   <h4>陣列寫法</h4>
-  <button class="btn">請操作本元件</button>
+
+  <!-- <button class="btn btn-outline-primary active">請操作本元件</button> -->
+  <!-- <button class="btn" :class="['btn-outline-primary','active']">請操作本元件</button> -->
+  <button class="btn" :class="arrayClass">請操入本元件</button>
+
   <p>請用陣列呈現此元件 className</p>
   <div class="form-check">
-    <input type="checkbox" class="form-check-input" id="classToggle3">
+    <input type="checkbox" class="form-check-input" id="classToggle3"
+    v-model="arrayClass" value="btn-outline-primary"
+    > 
     <label class="form-check-label" for="classToggle3">切換樣式</label>
   </div>
+
   <div class="form-check">
-    <input type="checkbox" class="form-check-input" id="classToggle4">
+    <input type="checkbox" class="form-check-input" id="classToggle4"
+    v-model="arrayClass" value="active"
+    >
     <label class="form-check-label" for="classToggle4">啟用元素狀態</label>
   </div>
   <hr>
+
+  <!-- ========================================================== -->
+<!-- 上面是插入class name 老師說這邊也是很實用的方式?? -->
   <h4>綁定行內樣式</h4>
   <p>請用不同方式綁定以下行內樣式</p>
-  <div class="box"></div>
-  <div class="box"></div>
-  <div class="box"></div>
+  <!-- 1.物簡寫法 或變數寫在data內(裡面可以寫多個)-->
+  <div class="box" :style="{backgroundColor:'red'}"></div>
+  <!-- <div class="box" :style="{'background-color':'red'}"></div> -->
+  <div class="box" :style=styleObject></div>
+    <!-- 陣列寫法 -->
+  <div class="box" :style="[{backgroundColor:'red'},{borderWidth:'8px'}]"></div>
+  <div class="box" :style="[styleObject,styleObject2]"></div>
   <hr>
   <h5>自動加上 Prefix (每個版本結果不同)</h5>
   <div class="box"></div>
@@ -157,9 +199,10 @@ var app = new Vue({
   data: {
     isTransform: false,
     boxColor: false,
-    objectClass: {
+    // objectClass: {
+    boxClass: {
       'rotate': false,
-      'bg-danger': false,
+      'bg-danger': false,//這邊到了上面要改駝峰
     },
 
     // Array 操作
@@ -170,6 +213,7 @@ var app = new Vue({
     styleObject: {
       backgroundColor: 'red',
       borderWidth: '5px'
+      // 'border-width': '5px'這樣也可以!!!
     },
     styleObject2: {
       boxShadow: '3px 3px 5px rgba(0, 0, 0, 0.16)'
@@ -187,6 +231,10 @@ var app = new Vue({
 }
 .box.rotate {
   transform: rotate(45deg)
+}
+
+.red-box{
+  background-color: brown;
 }
 </style>
 

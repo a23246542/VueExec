@@ -129,6 +129,9 @@
   <!-- =================================================== -->
   <h2>Slot 基礎範例</h2>
   <single-slot-component>
+  </single-slot-component>
+
+  <single-slot-component>
      <p>模板內我自己加的東西會完全被替換掉</p>
      <p>1.狀況1單純要組件新增內容 加個slot空標籤就好</p>
   </single-slot-component>
@@ -149,6 +152,7 @@
 
   <h2>具名插槽</h2>
   <named-slot-component>
+    <p>自己寫了個空slot加這行 這樣也行</p>
   </named-slot-component>
 
   <named-slot-component>
@@ -204,7 +208,9 @@
         
           <h5 class="card-title">Special title treatment</h5>
           <slot name="content" class="card-text">With supporting text below as a natural lead-in to additional content.</slot>
-        
+          
+          <slot></slot>
+
         <a href="#" class="btn btn-primary">
           <div>
             <slot name="btn">spanGo somewhere</slot>
