@@ -128,17 +128,52 @@ const people = [
 // forEach 與 map
 // 將所有物件增加 icash 有多少金額的欄位
 
+people.forEach(function(item,index){
+  item.icash=item.money+100;
+})
+
+console.log(people);
+
+var newPeople = people.map(function(item,index){
+  return{
+      ...item,
+      imp:"三張選票顧台灣"
+  }
+})
+
+console.log(newPeople);
+
 
 // filter
 // 挑出金額少於 5000 的物件
+
+var filterPeople = people.filter(function(item,index){
+  return item.money<5000;
+})
+
+console.log(filterPeople);
+
 
 // find
 // 1. 找到金額 = 500 的物件
 // 2. 找到 > 5000 的物件
 
+var findPeople =people.find(function(item,index){
+  return item.money==500
+})
+console.log(findPeople);
+
+
 // every
 // 1. 所有物件是否都超過 10000 元
 // 2. 是否所有物件超過 300 元
+
+var everyPeople = people.every(function(item,index){
+  return item.money>1000; 
+})
+
+console.log(everyPeople);
+
 
 // some
 // 1. 是否有物件超過 10000 元
@@ -146,6 +181,72 @@ const people = [
 
 // reduce
 // 去除掉老媽，請問剩下的人有多少錢？
+
+var reducePeople = people.reduce(function(total,item,index){
+  
+  if(item.name!="老媽"){
+    total+=item.money
+  }
+  return total 
+},0)
+
+console.log(reducePeople);
+
+var maxMoney = people.reduce(function(max,item,index){
+  if(item.name!="老媽"){
+    max = Math.max(max,item.money)
+  }
+  return max
+},0)
+console.log(maxMoney);
+
+// var whoMax = function(maxMoney){
+//   // return people.forEach(function(item,index){
+//   people.forEach(function(item,index){
+//      if(item.money==maxMoney){
+//        return item.name;
+//      }
+//   })
+// }
+// var whoMax = function(maxMoney){
+//     var a;
+
+//     people.forEach(function(item,index){
+//       if(item.money==maxMoney){
+//         a=item.name;
+//       }
+//     })
+//     return a;
+// }
+
+var a;
+
+var whoMax = function(maxMoney){
+    //  return people.forEach(function(item,index){
+     people.forEach(function(item,index){
+      if(item.money==maxMoney){
+        // a=item.name;
+        // console.log(a);
+        return item.name;
+      }
+    })
+}
+
+// whoMax();
+
+
+var b = people.forEach(function(item,index){
+      if(item.money==maxMoney){
+        // a=item.name;
+        // console.log(a);
+        return item.name;
+      }
+})
+    // console.log(a);
+    console.log(b);
+    console.log(whoMax);
+
+
 
 </script> 
         </div>
