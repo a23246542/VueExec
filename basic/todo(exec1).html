@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Todo 範例製作</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="images/favicon.ico" rel="shortcut icon">
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="/stylesheets/all.css">
+  <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/solid.js"
+    integrity="sha384-+Ga2s7YBbhOD6nie0DzrZpJes+b2K1xkpKxTFFcx59QmVPaSA8c7pycsNaFwUK6l" crossorigin="anonymous">
+  </script>
+  <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/regular.js"
+    integrity="sha384-t7yHmUlwFrLxHXNLstawVRBMeSLcXTbQ5hsd0ifzwGtN7ZF7RZ8ppM7Ldinuoiif" crossorigin="anonymous">
+  </script>
+  <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/fontawesome.js"
+    integrity="sha384-7ox8Q2yzO/uWircfojVuCQOZl+ZZBg2D2J5nkpLqzH1HY0C1dHlTKIbpRz/LG23c" crossorigin="anonymous">
+  </script>
+  <script src="/javascripts/vendor.js"></script>
+
+</head>
+
+<body class="bg-lighter">
+  <nav class="navbar navbar-expand-lg navbar-dark">
+    
+  </nav>
+  <div class="container my-5">
+    <div class="row">
+      <div class="col-md-3">
+        </div>
+      </div>
+
+      <div class="col-md-9 post">
+        <!-- 練習開始 -->
+        <!-- <h1 class="mt-0 text-muted">Todo 範例製作</h1> -->
+
+        <div class="alert alert-secondary">
+          <ol class="mb-0">
+            <!-- <li>請跟隨課程完成此章節。</li> -->
+          </ol>
+        </div>
+
+
+        <div id="app">
+
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">待辦事項</span>
+            </div>
+
+            <input type="text" class="form-control" placeholder="準備要做的任務"
+            v-model="newTodo"
+            @keyup.enter="addTodo"
+            >
+            <div class="input-group-append">
+              <button class="btn btn-primary" type="button"
+              @click="addTodo"
+              >新增</button>
+            </div>
+          </div>
+
+          <div class="card text-center">
+            <div class="card-header">
+              <ul class="nav nav-tabs card-header-tabs">
+                <li class="nav-item">
+                  <a class="nav-link active" href="#">全部</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link " href="#">進行中</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#">已完成</a>
+                </li>
+              </ul>
+            </div>
+
+            <ul class="list-group list-group-flush text-left">
+
+              <li class="list-group-item" 
+              v-for="(item,index) in todos"
+              :key="item.id"
+              @dbclick="editTodo(item)"
+              >
+                <div class="d-flex">
+
+                  <div class="form-check">
+                    <input type="checkbox" class="form-check-input" 
+                    v-model="item.completed"
+                    :id="item.id">
+
+                    <label class="form-check-label" 
+                    :for="item.id"
+                    >
+                      {{item.title}}
+                    </label>
+                  </div>
+
+                  <button type="button" class="close ml-auto" aria-label="Close"
+                  @click="removeTodo(item)"
+                  >
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+
+                </div>
+
+                <input type="text" class="form-control"
+                v-if="item"
+                >
+              </li>
+
+              <!-- <li class="list-group-item">
+                <div class="d-flex">
+                  <div class="form-check">
+                    <input type="checkbox" class="form-check-input" id="a1">
+                    <label class="form-check-label completed" for="a1">
+                      Cras justo odio
+                    </label>
+                  </div>
+                  <button type="button" class="close ml-auto" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+              </li>
+
+              <li class="list-group-item">
+                <input type="text" class="form-control">
+              </li> -->
+            </ul>
+            <div class="card-footer d-flex justify-content-between">
+              <span>還有 3 筆任務未完成</span>
+              <a href="#">清除所有任務</a>
+            </div>
+          </div>
+        </div>
+
+        <script>
+          var app = new Vue({
+            el: '#app',
+            data: {
+              newTodo:"",
+              todos:[]
+              //要存id 文字 完成狀態 
+            },
+            methods:{
+              addTodo(){
+                var vm=this;
+                var value=vm.newTodo.trim();
+                if(value!=""){
+                  var timestamp = Math.floor(Date.now());
+                  console.log(value,timestamp);
+
+                  vm.todos.push({
+                    id:timestamp,
+                    title:value,
+                    completed:false,
+                  })
+
+                  vm.newTodo=""
+                }else{
+                  return;
+                }
+                
+              },
+              removeTodo(todo){
+                  var newIndex="";
+                  var vm = this;
+                  vm.todos.forEach(function(item,index){
+                    if(item.id === todo.id){
+                      newIndex = index
+                    }
+                  })
+                  vm.todos.splice(newIndex,1);
+              },
+              editTodo(todo){
+                console.log(todo);
+                
+              }
+            }
+          });
+        </script>
+
+        <style>
+          .completed {
+            text-decoration: line-through
+          }
+        </style>
+
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>
