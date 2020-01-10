@@ -151,7 +151,7 @@
   </div>
   
   <hr>
-  <div class="card-columns">
+  <!-- <div class="card-columns">
     <div class="card status-aqi2">
       <div class="card-header">苗栗縣 - 三義
         <a href="#" class="float-right"><i class="far fa-star"></i></a>
@@ -165,20 +165,78 @@
       2018-05-20 16:00
       </div>
     </div>
-  </div>
+  </div> -->
+  <city-list></city-list>
 </div>
 
-<script>
-// API 來源
-// https://opendata.epa.gov.tw/Data/Contents/AQI/
+<!-- // API 來源
+// https://opendata.epa.gov.tw/Data/Contents/AQI/ -->
 
+
+
+<script type="text/x-template" id="selectCity">
+
+
+</script>
+
+
+<script type="text/x-template" id="staredList">
+
+</script>
+
+<script type="text/x-template" id="cityList">
+ <div class="list">
+  <div class="card-columns" v-for="(item,index) in filterData">
+    <div class="card status-aqi2">
+      <div class="card-header">{{item.County}} - {{item.SiteName}}
+        <a href="#" class="float-right"><i class="far fa-star"></i></a>
+      </div>
+      <div class="card-body">
+        <ul class="list-unstyled">
+          <li>AQI 指數: 54</li>
+          <li>PM2.5: 8</li>
+          <li>說明: 普通</li>
+        </ul>
+      2018-05-20 16:00
+      </div>
+    </div>
+  </div>
+ </div>
+</script>
+
+
+<script type="text/x-template" id="homeWork">
+</script>
+
+<script>
+  Vue.component('city-list',{
+    template:"#cityList",
+    props:[],
+    data(){
+      return{
+        
+      }
+    },
+    methods:{
+
+    }
+
+  })
+</script>
+
+
+<script>
 var app = new Vue({
   el: '#app',
+ 
   data: {
     data: [],
     location: [],
     stared: [],
-    filter: '',
+    filter: '臺北市',
+  },
+  mounted:function(){
+    this.getData();
   },
   // 請在此撰寫 JavaScript
   methods: {
@@ -192,17 +250,31 @@ var app = new Vue({
         console.log(response)
       });
     },
+  },
+  computed:{
+    filterData(){
+      var vm = this;
+      if(vm.filter==""){
+        return vm.data;
+      }else{
+        return vm.data.filter(function(item,index,array){
+          // return vm.data.County
+          return item.County==vm.filter;
+        })
+      }
+
+    }
   }
 });
 </script>
 <!-- 
 狀態對應表
-'良好',
-'status-aqi2' '普通',
-'status-aqi3' '對敏感族群不健康',
-'status-aqi4' '對所有族群不健康',
-'status-aqi5' '非常不健康',
-'status-aqi6' '危害'
+'良好'0~50,
+'status-aqi2' '普通 51~100' ,
+'status-aqi3' '對敏感族群不健康 101~150 ',
+'status-aqi4' '對所有族群不健康' 151~200,
+'status-aqi5' '非常不健康' 201~300,
+'status-aqi6' '危害 301~500'
 --> 
 <style>
 .status-aqi2 {
