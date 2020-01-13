@@ -45,28 +45,37 @@
             <div class="card-header">
                 <ul class="nav nav-tabs card-header-tabs">
                     <li class="nav-item">
-                        <a class="nav-link " :class="{'active':visibility=='all'}" @click="visibility='all'"  href="#">全部</a>
+                        <a class="nav-link " 
+                        :class="{'active':visibility=='all'}" 
+                        @click="visibility='all'"  href="#">全部</a>
                         <!-- 3.3 用變數裡面放字串 來做判斷 好像很常這樣 -->
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link " :class="{'active':visibility=='active'}" @click="visibility='active'"href="#">進行中</a>
+                        <a class="nav-link " 
+                        :class="{'active':visibility=='active'}" 
+                        @click="visibility='active'"href="#">進行中</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" :class="{'active':visibility=='completed'}" @click="visibility='completed'"href="#">已完成</a>
+                        <a class="nav-link"
+                        :class="{'active':visibility=='completed'}" 
+                        @click="visibility='completed'"href="#">已完成</a>
                     </li>
                 </ul>
             </div>
 
         <!-- ---------------------清單---------------------- -->
             <ul class="list-group list-group-flush text-left">
-                <li class="list-group-item" v-for="(item,key) in filteredTodos" @dblclick="editTodo(item)"> <!--01陣列來存代辦事項有哪些內容-->
-                   
+                <li class="list-group-item" v-for="(item,key) in filteredTodos" 
+                @dblclick="editTodo(item)"> <!--01陣列來存代辦事項有哪些內容-->          
                     <div class="d-flex" v-if = "item.id !== cacheTodo.id"> <!--修改功能 v-if決定顯示-->
                         <div class="form-check">
-                            <input type="checkbox" class="form-check-input" v-model="item.completed" :id="item.id"> <!--05細項綁定 id是去指定控制  checkbox的v-modle-->
+                            <input type="checkbox" class="form-check-input" 
+                            v-model="item.completed" 
+                            :id="item.id"> <!--05細項綁定 id是去指定控制  checkbox的v-modle-->
                             <label class="form-check-label" 
+                            :for="item.id"
                             :class="{'completed':item.completed}" 
-                            :for="item.id">
+                            >
                                 <!--3.1 input適用complete切換 一個是拿來用class切換-->
                                 {{item.title}}  <!--05 title是當資料模板-->
                             </label>
@@ -76,12 +85,16 @@
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
+                    <!-- v-model先綁定資料畫面 -->
                     <input type="text" class="form-control" 
-                    v-model="cacheTitle"
+                    v-model="cacheTitle" 
                     @keyup.esc="cancelEdit()"
-                    @keyup.enter="doneEdit()"
+                    @keyup.enter="doneEdit(item)"
                     v-if="item.id==cacheTodo.id" 
-                    > <!--修改功能 放到下方d-flex下方-->
+                    > 
+                    <!-- 做完了doneEdit的item要傳進去才能做修改 -->
+
+                    <!--修改功能 放到下方d-flex下方-->
                     <!--????這邊v-model不懂-->
                     <!--?!!!!設置兩個v-for也是來做切換-->
                 </li>
@@ -169,19 +182,20 @@
                 // this.todos.splice(key,1);
                 this.todos.splice(newIndex,1);
             },
-            editTodo:function(item){  //這邊item 就是那個todo陣列裡的物件
-                console.log(item); //回傳物件
-                this.cacheTodo=item;
-                this.cacheTitle=item.title;  //???????這邊是傳旨嗎
+            editTodo:function(item){  //這邊item 就是那個todos(陣列)裡的item(物件)
+                console.log(item); 
+                this.cacheTodo=item;//這樣todo物件算是淺複製過去?!
+                this.cacheTitle=item.title;  //綁定資料畫面 然後這是字串應該也是淺複製??
             },
             cancelEdit:function(){
-                this.cacheTodo={};
+                this.cacheTodo={};//可是這樣title有改道嗎??
+                this.cacheTodo="";
             },
             doneEdit:function(item){
                 item.title = this.cacheTitle;//??這行意義 是不是少一行
                 // item=this.cacheTodo;
                 console.log(item);
-                this.cacheTitle=" "; //??可是直接做上面editTodo就好了不行嗎
+                this.cacheTitle=""; //??可是直接做上面editTodo就好了不行嗎
                 this.cacheTodo ={};
 
             }
@@ -196,7 +210,7 @@
                 }else if(this.visibility=='active'){
                     var newTodos=[];
                     this.todos.forEach(function(item){
-                        if(!item.completed){
+                        if(!item.completed){//還沒完成的
                             // return newTodos=item.push();
                             newTodos.push(item);
                         }

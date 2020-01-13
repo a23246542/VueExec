@@ -33,6 +33,12 @@
       <div class="col-md-9 post">
         <!-- 練習開始 -->
         <!-- <h1 class="mt-0 text-muted">Todo 範例製作</h1> -->
+        <!-- 功能需求
+        1.建立todo(能打勾删除的)
+        2.删除todo(找到对应id)
+        3.页签(切换状态)
+        4.编辑(资料站存) -->
+        
 
         <div class="alert alert-secondary">
           <ol class="mb-0">
@@ -42,19 +48,17 @@
 
 
         <div id="app">
-
           <div class="input-group mb-3">
             <div class="input-group-prepend">
               <span class="input-group-text" id="basic-addon1">待辦事項</span>
             </div>
-
             <input type="text" class="form-control" placeholder="準備要做的任務"
             v-model="newTodo"
-            @keyup.enter="addTodo"
+            @keyup.enter="addTodo()"
             >
             <div class="input-group-append">
               <button class="btn btn-primary" type="button"
-              @click="addTodo"
+              @click="addTodo()"
               >新增</button>
             </div>
           </div>
@@ -64,57 +68,50 @@
               <ul class="nav nav-tabs card-header-tabs">
                 <li class="nav-item">
                   <a class="nav-link" href="#"
+                  :class="{'active':completed == 'all'}"
                   @click.prevent="visibility='all'"
-                  :class="{'active':visibility=='all'}"
                   >全部</a>
                 </li>
                 <li class="nav-item">
                   <a class="nav-link " href="#"
+                  :class="{'active':completed == 'active'}"
                   @click.prevent="visibility='active'"
-                  :class="{'active':visibility=='active'}"
                   >進行中</a>
                 </li>
                 <li class="nav-item">
                   <a class="nav-link" href="#"
+                  :class="{'active':completed == 'completed'}"
                   @click.prevent="visibility='completed'"
-                  :class="{'active':visibility=='completed'}"
                   >已完成</a>
                 </li>
               </ul>
             </div>
-
             <ul class="list-group list-group-flush text-left">
-              <li class="list-group-item" 
-              v-for="(item,index) in todos"
-              :key="item.id"
-              @dblclick="editTodo(item)"
+
+              <li class="list-group-item"
+              v-for="item in todos"
               >
-                <div class="d-flex"
-                v-if="item.id !== cacheTodo.id">                
-                  <div class="form-check">
-                    <input type="checkbox" class="form-check-input"
-                    :id="item.id"
-                    v-model="item.completed">
-                    <label class="form-check-label" 
-                    :for="item.id"
-                    :class="{'completed':item.completed}"
-                    >
-                      {{item.title}}
-                    </label>
-                  </div>
-                  <button type="button" class="close ml-auto" aria-label="Close"
-                  @click="removeTodo(item)"
-                  >
-                    <span aria-hidden="true">&times;</span>
-                  </button>
+                <div class="d-flex">
+                      <div class="form-check">
+                          <input type="checkbox" class="form-check-input" 
+                          id="item.id"
+                          v-model="item.completed"
+                          >
+                          <label class="form-check-label" 
+                          for="item.id"
+                          :class="{'completed':item.completed}"
+                          >
+                            {{item.title}}
+                          </label>
+                      </div>
+                      
+                      <button type="button" class="close ml-auto" aria-label="Close"
+                      @click="removeTodo(item)"
+                      >
+                          <span aria-hidden="true">&times;</span>
+                      </button>
                 </div>
 
-                <input type="text" class="form-control"
-                @keyup.enter="doneEdit(item)"
-                v-model="cacheTitle"
-                v-if="item.id==cacheTodo.id"
-                @keyup.esc="cancelEdit"
-                >
               </li>
 
               <!-- <li class="list-group-item">
@@ -129,16 +126,17 @@
                     <span aria-hidden="true">&times;</span>
                   </button>
                 </div>
-              </li>
+              </li> -->
 
-              <li class="list-group-item">
+              <!-- <li class="list-group-item">
                 <input type="text" class="form-control">
               </li> -->
+
             </ul>
-            <div class="card-footer d-flex justify-content-between">
+            <!-- <div class="card-footer d-flex justify-content-between">
               <span>還有 3 筆任務未完成</span>
               <a href="#">清除所有任務</a>
-            </div>
+            </div> -->
           </div>
         </div>
 
@@ -147,83 +145,61 @@
             el: '#app',
             data: {
               newTodo:"",
-              todos:[],
-              //要存id 文字 完成狀態 
-              cacheTitle:"",
-              cacheTodo:{},
-              visibility:"all",
+              todos:[
+                // {
+                //   id:timestamp,
+                //   title:"test",
+                //   completed:false
+                // }
+              ],
+              visibility:'all',
             },
             methods:{
               addTodo(){
-                var vm=this;
-                var value=vm.newTodo.trim();
+                var vm = this;
+                var value = newTodo.trim();
                 if(value!=""){
                   var timestamp = Math.floor(Date.now());
-                  console.log(value,timestamp);
                   vm.todos.push({
-                    id:timestamp,
-                    title:value,
-                    completed:false,
+                        id:timestamp,
+                        title:value,
+                        completed:false,
                   })
-                  vm.newTodo=""
+                  vm.newTodo="";
                 }else{
                   return;
-                }
-                
+                } 
               },
               removeTodo(todo){
-                  var newIndex="";
-                  var vm = this;
-                  vm.todos.forEach(function(item,index){
-                    if(item.id === todo.id){
-                      newIndex = index
-                    }
-                  })
-                  vm.todos.splice(newIndex,1);
-              },
-              editTodo(todo){
-                console.log(todo);
-                this.cacheTodo=todo;
-                this.cacheTitle=todo.title;
-              },
-              cancelEdit:function(){
-                var vm=this;
-                vm.cacheTitle="";
-                vm.cacheTodo={};
-              },
-              doneEdit:function(todo){
-                var vm=this;
-                todo.title=vm.cacheTitle;
-                vm.cacheTitle="";
-                vm.cacheTodo={};
+                var vm = this;
+                var newIndex = "";
+                vm.todos.forEach(function(item,index){
+                  if(item.id==todo.id){
+                      newIndex = index;
+                  }
+                })
                 
-              }
+                vm.todos.splice(newIndex,1);
+              },
+            
             },
             computed:{
-                    filteredTodos(){
-                      if(this.visibility=='all'){
-                        return this.todos;
-                      }else if(this.visibility=='active'){
-                        var newTodos=[];
-                        this.todos.forEach(function(item){
-                            if(!item.completed){
-                            // 還沒完成
-                            newTodos.push(item);
-                          }
-                        })
-                        return newTodos;
-                      }else if(this.visibility=='completed'){
-                        var newTodos=[];
-                        this.todos.forEach(function(item){
-                            if(item.completed){
-                              newTodos.push(item);
-                            }
-                        })
-                            return newTodos;
-                      }
-                    }
-            }
+              filterTodos(){
+                var vm = this;
+                if(vm.visibility=="all"){
+                  return vm.todos
+                }else if(vm.visibility=="active"){
 
+                  
+
+                  // vm.todos.filter(function(item,index){
+                  //     return  if(!item.completed){
+                        
+                  //     }
+                  // })
+                }
+              }
+            }
           });
         </script>
 
