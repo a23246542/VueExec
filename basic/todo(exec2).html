@@ -68,37 +68,40 @@
               <ul class="nav nav-tabs card-header-tabs">
                 <li class="nav-item">
                   <a class="nav-link" href="#"
-                  :class="{'active':completed == 'all'}"
+                  :class="{'active':visibility == 'all'}"
                   @click.prevent="visibility='all'"
                   >全部</a>
                 </li>
                 <li class="nav-item">
                   <a class="nav-link " href="#"
-                  :class="{'active':completed == 'active'}"
+                  :class="{'active':visibility == 'active'}"
                   @click.prevent="visibility='active'"
                   >進行中</a>
                 </li>
                 <li class="nav-item">
                   <a class="nav-link" href="#"
-                  :class="{'active':completed == 'completed'}"
+                  :class="{'active':visibility == 'completed'}"
                   @click.prevent="visibility='completed'"
                   >已完成</a>
                 </li>
               </ul>
             </div>
-            <ul class="list-group list-group-flush text-left">
 
+
+            <ul class="list-group list-group-flush text-left">
               <li class="list-group-item"
-              v-for="item in todos"
+              v-for="item in filterTodos1"
+              @dblclick="editTodo(item)"
               >
-                <div class="d-flex">
+                <div class="d-flex" 
+                v-if="item.id!==cacheTodo.id">
                       <div class="form-check">
                           <input type="checkbox" class="form-check-input" 
-                          id="item.id"
+                          :id="item.id"
                           v-model="item.completed"
                           >
                           <label class="form-check-label" 
-                          for="item.id"
+                          :for="item.id"
                           :class="{'completed':item.completed}"
                           >
                             {{item.title}}
@@ -112,6 +115,18 @@
                       </button>
                 </div>
 
+                <!-- <li class="list-group-item"
+                v-if="cacheTodo!={}"
+                > -->
+
+                <input type="text" class="form-control"
+                v-if="item.id==cacheTodo.id"
+                v-model="cacheTitle"
+                @keyup.esc="cancelTodo()"
+                @keyup.enter="doneTodo(item)"
+                >
+
+                <!-- </li> -->
               </li>
 
               <!-- <li class="list-group-item">
@@ -153,11 +168,13 @@
                 // }
               ],
               visibility:'all',
+              cacheTitle:"",
+              cacheTodo:{}
             },
             methods:{
               addTodo(){
                 var vm = this;
-                var value = newTodo.trim();
+                var value = vm.newTodo.trim();
                 if(value!=""){
                   var timestamp = Math.floor(Date.now());
                   vm.todos.push({
@@ -181,23 +198,46 @@
                 
                 vm.todos.splice(newIndex,1);
               },
+              editTodo(todo){
+                var vm = this;
+                vm.cacheTitle=todo.title;
+                vm.cacheTodo=todo;//浅复制??>>>
+              },
+              cancelTodo(){
+                var vm = this;
+                vm.cacheTitle="";
+                vm.cacheTodo={};
+              },
+              doneTodo(todo){
+                var vm = this;
+                todo.title=vm.cacheTitle;
+                vm.cacheTitle="";
+                vm.cacheTodo={};
+              }
             
             },
             computed:{
-              filterTodos(){
+              filterTodos1(){
                 var vm = this;
                 if(vm.visibility=="all"){
                   return vm.todos
                 }else if(vm.visibility=="active"){
-
-                  
-
+                  return vm.todos.filter(function(item){
+                    return item.completed == false;
+                  })                 
                   // vm.todos.filter(function(item,index){
                   //     return  if(!item.completed){
                         
                   //     }
                   // })
+                }else if(vm.visibility=="completed"){
+                  return vm.todos.filter(function(item){
+                    return item.completed == true;
+                  })
                 }
+              },
+              filterTodos12(){
+                
               }
             }
           });

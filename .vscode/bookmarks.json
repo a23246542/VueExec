@@ -13,5 +13,15 @@
 				"label": ""
 			}
 		]
+	},
+	{
+		"path": "$ROOTPATH$\\basic\\todo(exec2).html",
+		"bookmarks": [
+			{
+				"line": 97,
+				"column": 36,
+				"label": ""
+			}
+		]
 	}
 ]
