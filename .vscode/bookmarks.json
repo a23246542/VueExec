@@ -18,8 +18,13 @@
 		"path": "$ROOTPATH$\\basic\\todo(exec2).html",
 		"bookmarks": [
 			{
-				"line": 97,
+				"line": 95,
 				"column": 36,
+				"label": ""
+			},
+			{
+				"line": 238,
+				"column": 31,
 				"label": ""
 			}
 		]

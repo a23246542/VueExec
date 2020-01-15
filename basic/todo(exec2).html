@@ -39,13 +39,11 @@
         3.页签(切换状态)
         4.编辑(资料站存) -->
         
-
         <div class="alert alert-secondary">
           <ol class="mb-0">
             <!-- <li>請跟隨課程完成此章節。</li> -->
           </ol>
         </div>
-
 
         <div id="app">
           <div class="input-group mb-3">
@@ -90,7 +88,7 @@
 
             <ul class="list-group list-group-flush text-left">
               <li class="list-group-item"
-              v-for="item in filterTodos1"
+              v-for="item in filterTodos2"
               @dblclick="editTodo(item)"
               >
                 <div class="d-flex" 
@@ -236,8 +234,27 @@
                   })
                 }
               },
-              filterTodos12(){
-                
+              filterTodos2(){
+                  var vm=this;
+                  var newTodos=[];
+                  if(vm.visibility=="all"){
+                    return vm.todos;
+                  }else if(vm.visibility=="active"){
+                    vm.todos.forEach(function(item){
+                      if(!item.completed){
+                        newTodos.push(item);
+                      }
+                    })
+                    return newTodos;
+                  }else if(vm.visibility=="completed"){
+                    vm.todos.forEach((item)=>{
+                      if(item.completed){
+                        newTodos.push(item);
+                      }
+                    })
+                    return newTodos;
+                  }
+
               }
             }
           });

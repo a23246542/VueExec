@@ -228,7 +228,26 @@
                 }
                 // ????不知道是不是前面return會跳掉所以這邊可以return空陣列
                 return [];
-            }
+            },
+            filterTodos1(){
+                var vm = this;
+                if(vm.visibility=="all"){
+                    return vm.todos
+                }else if(vm.visibility=="active"){
+                    return vm.todos.filter(function(item){
+                        return item.completed == false;
+                })                 
+                  // vm.todos.filter(function(item,index){
+                  //     return  if(!item.completed){
+                        
+                  //     }
+                  // })
+                }else if(vm.visibility=="completed"){
+                    return vm.todos.filter(function(item){
+                        return item.completed == true;
+                    })
+                }
+            },
         }
     })
     
