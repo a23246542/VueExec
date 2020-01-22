@@ -128,52 +128,64 @@ console.log(callSomeone('小明'))
 
 // !!!改寫成其餘參數才可以
 
-const updateEasyCard = (...arg) => {
-  console.log(arg);
-}
+// const updateEasyCard = (...arg) => {
+//   console.log(arg);
+// }
 
-updateEasyCard(10,50,100,50);
+// updateEasyCard(10,50,100,50);
 
 
-// # This 綁定的差異
-var name = '全域阿婆'
-var auntie = {
-  name: '漂亮阿姨',
-  callName: function () { 
-    console.log('1', this.name); // 1 漂亮阿姨
-    setTimeout(function () {
-      console.log('2', this.name); // 2 漂亮阿姨  痊癒阿婆
-      console.log('3', this); // 3 auntie 這個物件  !!!錯 是window這個物件
-    }, 10);
-  },
-  callName2:() => {
-    console.log('1 arrow',this.name);
-    setTimeout( () => {
-      console.log('2', this.name);
-      console.log('3', this);
-    },10);
+// // # This 綁定的差異
+// var name = '全域阿婆'
+// var auntie = {
+//   name: '漂亮阿姨',
+//   callName: function () { 
+//     console.log('1', this.name); // 1 漂亮阿姨
+//     window.setTimeout(function () {
+//       console.log('2', this.name); // 2 漂亮阿姨錯  是全域阿婆
+//       console.log('3', this); // 3 auntie 這個物件  !!!錯 是window這個物件
+//     }, 10);
+//   },
+//   callName2:() => {
+//     console.log('1 arrow',this.name);//取用到物件this 也是漂亮阿姨 錯 結果是全域阿婆
+//     setTimeout( () => { //這邊也是箭頭含是 沒有this window
+//       console.log('2 arrow', this.name); //全域阿婆
+//       console.log('3 arrow', this);
+//     },20);
+//   },
+
+//   callName3(){ // !!這樣等於傳統函式
+//     console.log('1 no arrow',this.name); //漂亮阿姨
+//     setTimeout(()=>{
+//       console.log('2 no arrow',this.name);//漂亮阿姨
+//       console.log('3 no arrow',this);
+//     },30)
     
-  }
-}
-auntie.callName();
-auntie.callName2();
+//   }
+// }
+// // 看以下三行呼叫
+// auntie.callName();
+// // !!!傳統this = 函式的呼叫方式
+// auntie.callName2();
+// auntie.callName3();
 
-// !!!傳統this = 函式的呼叫方式
+// // -----------------------------------
 
-// # 善用的方式
-// 請將內層的 console.log 能夠指向 auntie 這個物件
-var auntie = {
-  name: '漂亮阿姨',
-  callName () { 
-    let vm = this;//會指向物件
-    // setTimeout(function () {
-    setTimeout(() => 
-    {
-      console.log(vm);
-    }, 10);
-  }
-}
-auntie.callName();
+// // # 善用的方式
+// // 請將內層的 console.log 能夠指向 auntie 這個物件
+// var auntie = {
+//   name: '漂亮阿姨',
+//   callName () { 
+//     let vm = this;//會指向物件
+//     // setTimeout(function () {
+//     setTimeout(() => {
+//       console.log(vm);
+//     }, 40);
+//   }
+// }
+// auntie.callName();
+
+
 </script> 
         </div>
       </div>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        // 卡斯柏範例補充
+        //補充教材在看一下dropbox
+
+        1.
+        //========== 建構式
+        function Person(){
+        this.name = '阿明';
+
+        setTimeout(() => { // 採用同層的 this
+            console.log(this.name)
+        }, 10);
+        }
+
+        var p = new Person();//阿明
+
+
+
+        // 2. 因為物件下不會另外套用自己的 this
+        //    所以導向全域
+        // ========物件
+        var name = '大明';
+
+        var MyPerson = {
+            name: '小明',
+            fn() {
+                console.log('1', this.name);
+                setTimeout(() => { // 因為沒有自己的 this，所以採用同層的 this
+                    console.log(2, this.name);
+                }, 10);
+            },
+            arrow: () => {
+                console.log('3', this.name);
+            },
+            obj: {
+                arrow: () => {
+                    console.log('4', this.name);
+                }
+            }
+        }
+
+        MyPerson.fn(); //小明 小明(因為fn()的this是myperson)
+        MyPerson.arrow(); //全域大明
+        MyPerson.obj.arrow(); //小明 錯!! 是全域大明(因為obj是物件不是函數 沒有自己的this)
+    </script>
+
+</body>
+
+</html>
