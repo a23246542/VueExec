@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <style>
+    
+    </style>
+    <title>Document</title>
+    <script src="./data.js"></script>
+
+</head>
+<body>
+    
+    <div id="app">\
+        <section>
+            <div class="container">
+                <div class="title">
+                    <img
+                        class="logo"
+                        src="./1809.png" alt=""
+                    >
+                    <h1>{{title}}</h1>
+                    <div class="description">
+                        <!-- 如果第一天就"藏"起來 -->
+                        <!-- 如果不是第一天就"秀"出來 反著看 -->
+                        <!-- index ! =0 -->
+                        <a 
+                            v-if="index > 0"
+                            class="arrow left"
+                            @click="changeIndex(-1)"></a>
+                        <div
+                            class="menuItem white"
+                            style="transform:scale3d(1.5,1.5,1)"
+                        >
+                            <span class="number">{{index+1}}</span>
+                            <!-- 怎麼左右雙花花 -->
+                            <span class="type">{{menu[index].type}}</span>
+                            <a
+                                class="title"
+                                target="vue-iron"
+                                :href="menu[index].link"
+                            >{{menu[index].title}}</a>
+                        </div>
+                        <!-- 如果是最後一天就藏起來 -->
+                        <!-- 如果不是最後一天就秀出來 -->
+                        <!-- index ! = total-1 -->
+                        <a 
+                            v-if="index < total -1"
+                            class="arrow right"
+                            @click="changeIndex(1)"></a>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script>
+        // 1.盡可能先把功能做完再來優化 精簡什麼的
+        // 2.三原則 who when what
+        // 4.compute代替資料變數 資料連動
+        // 5.隱藏倫波
+        let vm = new Vue({
+            el:'#app',
+            data:data,
+            computedL:{
+                today(){
+                    return this.menu[this.index]
+                },
+                total(){
+                    return this.menu.length;
+                }
+            },
+            methods:{
+                changeIndex(change){
+                    // 3.用榆樹去取編號範圍 012345 像是32 33 35 對30 -1 -2 對30
+                    let length =this.menu.length;
+                    // this.index = (this.index + change + length)%length
+                    this.index = (this.index + change + this.total)%this.total
+
+                    // this.index += change;
+                    // if(this.index<0){
+                    //     this.index = 0
+                    // }else if (this.index>this.menu.length-1){
+                    //     this.index = this.menu.length - 1
+                    // }
+
+                    // 循環就是對調
+                    // this.index += change;
+                    // if(this.index<0){
+                    //     this.index = this.menu.length - 1
+                    // }else if (this.index>this.menu.length-1){
+                    //     this.index = 0
+                    // }
+                }
+            }
+
+        })
+    </script>
+
+</body>
+</html>

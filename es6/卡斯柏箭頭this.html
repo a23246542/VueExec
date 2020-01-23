@@ -52,7 +52,8 @@
 
         MyPerson.fn(); //小明 小明(因為fn()的this是myperson)
         MyPerson.arrow(); //全域大明
-        MyPerson.obj.arrow(); //小明 錯!! 是全域大明(因為obj是物件不是函數 沒有自己的this)
+        MyPerson.obj.arrow(); //小明 錯!! 是全域大明(因為obj是物件不是函數 沒有自己的this) 
+        // 好像是因為myperson也是物件又往外找? vue外面是函數 這個案例是物件 不一樣
     </script>
 
 </body>
