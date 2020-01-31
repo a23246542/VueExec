@@ -212,8 +212,39 @@
 </head>
 
 <body>
+    <div id="app">
+        <section>
+            <div class="container">
+                <div class="title">
+                    <div class="input">
+                        <select name="" id=""></select>
+                        <select name="" id=""></select>
+                    </div>
+                    <div class="description"></div>
+                    
+                </div>
+            </div>
+        </section>
+    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script>
+    
+    new Vue({
+        el:'#app',
+        data:data,
+        computed: {
+            typeList(){
+                let obj = {
+                    sort:[],//為了希望有順序的
+                    map:{},//去存什麼type 什麼內容
+                }
+                this.menu.forEach()
+            }
+        }
+    })
+    </script>
+
 </body>
 
 </html>
