@@ -111,20 +111,13 @@
 <div id="app">
   <h4>v-if, v-else</h4>
   <p>使用 v-if, v-else 切換物件呈現</p>
-  <!-- <div class="alert alert-success" v-if="isSuccess===true">成功!</div>
-  <div class="alert alert-danger" v-if="isSuccess===false">失敗!</div> -->
-
-  <!-- <div class="alert alert-danger" v-if="isSuccess===true">失敗!</div> -->
-  <!-- <div class="alert alert-danger" v-if="!isSuccess">失敗!</div> -->
-
-  <div class="alert alert-success" v-if="isSuccess">成功!</div>
-  <div class="alert alert-danger" v-else>失敗!</div>
+  <div class="alert alert-success">成功!</div>
+  <div class="alert alert-danger">失敗!</div>
   <div class="form-check">
     <input type="checkbox" class="form-check-input" id="isSuccess" v-model="isSuccess">
     <label class="form-check-label" for="isSuccess">啟用元素狀態</label>
   </div>
 
-  <!-- ================================================================= -->
   <h4>template 標籤</h4>
   <p>使用 template 切換多數 DOM 呈現</p>
   <table class="table">
@@ -191,8 +184,7 @@
 var app = new Vue({
   el: '#app',
   data: {
-    // isSuccess: true,
-    isSuccess: false,
+    isSuccess: true,
     showTemplate: true,
 
     link: 'a',

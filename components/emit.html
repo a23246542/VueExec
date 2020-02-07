@@ -123,9 +123,14 @@
 <div id="app">
   <h2>透過 emit 向外傳遞資訊</h2>
   我透過元件儲值了 {{ cash }} 元
-  <button-counter></button-counter>
+  <button class="btn btn-primary"
+  @click="incrementTotal"
+  >按我增加</button>
+  <p>下面是子組件</p>
   <hr>
-  <button-counter></button-counter>
+  <button-counter @increment="incrementTotal"></button-counter>
+  <hr>
+  <button-counter @increment="incrementTotal"></button-counter>
 </div>
 
 <script>
@@ -140,7 +145,9 @@ Vue.component('buttonCounter', {
     }
   },
   methods: {
-    
+    incrementCounter(){
+        this.$emit('increment',Number(this.counter))
+    }
   }
 });
 
@@ -150,7 +157,11 @@ var app = new Vue({
     cash: 300
   },
   methods: {
-    
+    incrementTotal(counter){
+        // this.cash++
+        counter = Number(counter)||1;//最少要增加1  輸入0是假植
+        this.cash+=counter;
+    }
   }
 });
 </script>
@@ -179,6 +190,7 @@ var app = new Vue({
   }
 });
 --> 
+<!-- ========================================練習========================================= -->
         </div>
       </div>
     </div>
