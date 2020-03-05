@@ -420,7 +420,7 @@
                                     vm.data = response;
                                     vm.data.forEach(function(item,index,array){
                                     
-                                    item.staredStatus="false";
+                                    // item.staredStatus="false";
                                     // vm.$set('item',staredStatus,false);
                                     // vm.$set(this.data,'item',{
                                     //     staredStatus:false
@@ -429,7 +429,9 @@
                                     // vm.$set(this.data[index],'staredStatus',false);
                                     // vm.$set(vm.data[index],'staredStatus',false);
                                     // vm.$set(vm.data.item,'staredStatus',false);
-                                    vm.$set(item,'staredStatus',false);
+                                    // vm.$set(item,'staredStatus',false);
+                                    // vm.$set(vm.data,index,{'staredStatus':false});
+                                    // vm.$set(vm.data[index],staredStatus,false);
 
                                     if(item.AQI<=50){
                                         item.status = "良好";
