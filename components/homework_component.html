@@ -158,31 +158,18 @@
                         <option value="">--- 請選擇城市 ---</option>
                     </select> -->
                     <!--=============================================-->
-                    <div>
-                        <h4>關注城市</h4>
-                        <div class="card-columns">
-                            <div class="card status-aqi2">
-                                <div class="card-header">苗栗縣 - 三義
-                                    <a href="#" class="float-right"><i class="fas fa-star"></i></a>
-                                </div>
-                                <div class="card-body">
-                                    <ul class="list-unstyled">
-                                        <li>AQI 指數: 54</li>
-                                        <li>PM2.5: 8</li>
-                                        <li>說明: 普通</li>
-                                    </ul>
-                                    2018-05-20 16:00
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    
+                   <stared-list
+                   :stared-city-list = stared
+                   @removeemit="removeStar" 
+                   ></stared-list>
                     <!--=============================================-->
                     <hr>
                     
                     <!-- <city-list :city-list='data'></city-list> -->
                     <city-list 
                     :filter-city-list = filterData
-                    
+                    @staremit="starCity"
                     ></city-list>
                 </div>
 
@@ -256,16 +243,61 @@
 
 
 
+<!-- ====================================關注城市========================================= -->             
+            
+
+            <script type="text/x-template" id="staredList">
+                    <div>
+                        <h4>關注城市</h4>
+                        <div class="card-columns">
+                            <div class="card status-aqi2"
+                            v-for="(item,key) in starData"
+                            :key = key
+                            >
+                                <div class="card-header">{{item.County}} - {{item.SiteName}}
+                                    <a href="#" class="float-right"
+                                    @click.prevent="removeStar(item)"
+                                    ><i class="fas fa-star"></i></a>
+                                </div>
+                                <div class="card-body">
+                                    <ul class="list-unstyled">
+                                        <li>AQI 指數:{{item.AQI}}</li>
+                                        <li>PM2.5:{{item['PM2.5']}}</li>
+                                        <li>說明:{{item.Status}}</li>
+                                    </ul>
+                                    {{item.PublishTime}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>               
+            </script>
+            <script>
+                Vue.component('stared-list',{
+                    template:'#staredList',
+                    props:['staredCityList'],
+                    data(){
+                        return{
+                            // 單向數據流??
+                            starData:this.staredCityList
+                        }
+                    },
+                    methods:{
+                        removeStar(item){
+                            this.$emit('removeemit',item);
+                            // this.starData.splice會動態寫回來就好
+                        }
+                    }
+                })
+            
+            </script>
+
+
+
+
 
 
         <!-- ====================================城市列表========================================= -->             
                 
-                <script type="text/x-template" id="staredList">
-
-                </script>
-
-
-
 
 
                 <script type="text/x-template" id="cityList">
@@ -275,12 +307,32 @@
                         <div class="card-columns">
                             <!-- <div class="card status-aqi2"　 v-for="(item,index) in cityList"> -->
                                 <!-- :filter-city-list = filterData　 -->
-                            <div class="card status-aqi2"
+                            <div 
+                            class="card"
+                            :class="statusColor(item.status)"
                           
-                            v-for="(item,index) in filterCityList"
+                            v-for="(item,index) in filterCityList" :key = index
                             >
                                 <div class="card-header">{{item.County}} - {{item.SiteName}}
-                                    <a href="#" class="float-right"><i class="far fa-star"></i></a>
+                                    <a href="#" class="float-right"
+                                    @click.prevent="starCity(item)"
+                                    >
+                                        <!-- <i class="far fa-star" title="空心"></i>
+                                        <i class="fas fa-star" title="實心"></i> -->
+
+                                        <!-- <i class="fas fa-star"
+                                        v-if="item.staredStatus"
+                                        key="index"
+                                        ></i>
+                                        <i class="far fa-star"
+                                        v-if="!item.staredStatus"
+                                        ></i> -->
+
+                                        <i v-if="!item.staredStatus" class="far fa-star" title="空心"></i>
+                                        <i v-else class="fas fa-star" title="實心"></i>
+                                        <!-- <i v-show="!item.staredStatus" class="far fa-star" title="空心"></i>
+                                        <i v-show="item.staredStatus" class="fas fa-star" title="實心"></i> -->
+                                    </a>
                                 </div>
                                 <div class="card-body">
                                     <ul class="list-unstyled">
@@ -289,7 +341,7 @@
                                     <li>PM2.5:{{item['PM2.5']}}</li>
                                     <li>說明:{{item.Status}}</li>
                                     </ul>
-                                2018-05-20 16:00
+                                {{item.PublishTime}}
                                 </div>
                             </div>
                         </div>
@@ -307,7 +359,35 @@
                                 }
                             },
                             methods: {
-                                
+                                starCity(item){
+                                    this.$emit('staremit',item);
+                                },
+                                statusColor(status){
+                                    switch(status) {
+                                        case '良好':
+                                        return '';
+                                        break;
+                                        case '普通':
+                                        return 'status-aqi2';
+                                        break;
+                                        case '對敏感族群不健康':
+                                        return 'status-aqi3';
+                                        break;
+                                        case '對所有族群不健康':
+                                        return 'status-aqi4';
+                                        break;
+                                        case '非常不健康':
+                                        return 'status-aqi5';
+                                        break;
+                                        case '危害':
+                                        return 'status-aqi6';
+                                        break;
+                                        default:
+                                        break;
+                                    }
+                                }
+
+                                        
                             }
 
                     })
@@ -338,9 +418,19 @@
                                 // 使用 jQuery ajax
                                 $.get(api).then(function (response) {
                                     vm.data = response;
-
                                     vm.data.forEach(function(item,index,array){
                                     
+                                    item.staredStatus="false";
+                                    // vm.$set('item',staredStatus,false);
+                                    // vm.$set(this.data,'item',{
+                                    //     staredStatus:false
+                                    // });
+                                    // vm.$set(this.data.item,'staredStatus',false);
+                                    // vm.$set(this.data[index],'staredStatus',false);
+                                    // vm.$set(vm.data[index],'staredStatus',false);
+                                    // vm.$set(vm.data.item,'staredStatus',false);
+                                    vm.$set(item,'staredStatus',false);
+
                                     if(item.AQI<=50){
                                         item.status = "良好";
                                     }else if(item.AQI>=51&&item.AQI<=100){
@@ -370,7 +460,27 @@
                             filterCity(filterTxt){
                                 this.filter = filterTxt;
                                 
-                                
+                            },
+                            starCity(staredItem){
+
+                                if(this.stared.indexOf(staredItem)==-1){
+                                    this.stared.push(staredItem)
+
+                                    staredItem.staredStatus = true;
+                                    
+                                }else{
+                                    let position = this.stared.indexOf(staredItem);
+                                    this.stared.splice(position,1);
+                                    staredItem.staredStatus = false;
+                                }
+                            },
+                            removeStar(removeItem){
+                                const vm = this;
+                                vm.stared.forEach((item,index,arr)=>{
+                                    if(item===removeItem){
+                                        vm.stared.splice(index,1);
+                                    }
+                                })
                             }
                         },
                         computed: {
