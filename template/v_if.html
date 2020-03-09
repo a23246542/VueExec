@@ -132,37 +132,49 @@
       <th>編號</th>
       <th>姓名</th>
     </thead>
-    <tr>
-      <td>1</td>
-      <td>安妮</td>
-    </tr>
-    <tr>
-      <td>2</td>
-      <td>小明</td>
-    </tr>
+    <template v-if="showTemplate">
+        <tr>
+            <td>1</td>
+            <td>安妮</td>
+        </tr>
+        <tr>
+            <td>2</td>
+            <td>小明</td>
+        </tr>
+    </template>
+    
   </table>
   <div class="form-check">
     <input type="checkbox" class="form-check-input" id="showTemplate" v-model="showTemplate">
     <label class="form-check-label" for="showTemplate">啟用元素狀態</label>
   </div>
+  <!-- ===========================================================================-->
   <hr>
   <h4>v-else-if</h4>
   <p>使用 v-else-if 做出分頁頁籤</p>
   <ul class="nav nav-tabs">
     <li class="nav-item">
-      <a class="nav-link" href="#">標題一</a>
+      <a class="nav-link" href="#" 
+      @click.prevent="link='a'"
+      :class="{'active':link==='a'}"
+      >標題一</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" href="#">標題二</a>
+      <a class="nav-link" href="#" 
+      @click.prevent="link='b'"
+      :class="{'active':link==='b'}">標題二</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" href="#">標題三</a>
+      <a class="nav-link" href="#" 
+      @click.prevent="link='c'"
+      :class="{'active':link==='c'}"
+      >標題三</a>
     </li>
   </ul>
   <div class="content">
-    <div>Ａ</div>
-    <div>Ｂ</div>
-    <div>Ｃ</div>
+    <div v-if="link==='a'">Ａ</div>
+    <div v-else-if="link==='b'">Ｂ</div>
+    <div v-else-if="link==='c'">Ｃ</div>
   </div>
   <hr>
   <h4>KEY</h4>
@@ -191,8 +203,7 @@
 var app = new Vue({
   el: '#app',
   data: {
-    // isSuccess: true,
-    isSuccess: false,
+    isSuccess:false,
     showTemplate: true,
 
     link: 'a',

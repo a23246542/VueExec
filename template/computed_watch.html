@@ -110,17 +110,17 @@
 
 <div id="app">
   <h4>Computed</h4>
-  <p>使用 Computed 來過濾資料。</p>
+  <p>1.使用 Computed 來過濾資料。</p>
   <input type="text" class="form-control" v-model="filterText">
   <ul>
     <li v-for="(item, key) in arrayData" :key="item.age">
       {{ key }} - {{ item.name }} {{ item.age }} 歲 <input type="text">
     </li>
   </ul> 
-  <p>使用 Computed 來呈現時間格式。</p>
+  <p>2.使用 Computed 來呈現時間格式。</p>
   <p></p>
   <h4>Watch</h4>
-  <p>使用 trigger 來觸發旋轉 box、並在三秒後改變回來</p>
+  <p>3.使用 trigger 來觸發旋轉 box、並在三秒後改變回來</p>
   <div class="box" :class="{'rotate': trigger }"></div>
   <hr>
   <button class="btn btn-outline-primary">Counter</button>
