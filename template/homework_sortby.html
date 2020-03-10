@@ -119,16 +119,27 @@
     <thead>
       <tr>
         <th>品名</th>
-        <th class="click">價格 
+        <th class="click"
+        @click="resortItem='price',reverse['price']=!reverse['price']"
+        >價格 
           <!-- isReverse 為反轉 className -->
-          <span class="icon isReverse">
+          <span class="icon"
+          :class="{'isReverse':reverse['price'],'opacity':resortItem!=='price'}"
+          >
             <i class=" fas fa-angle-up text-success"></i>
           </span>
         </th>
-        <th class="click">到期日 
+        <th class="click"
+        @click="resortItem = 'expiryDate',reverse['expiryDate']=!reverse['expiryDate']"
+        >到期日
+            <span class="icon"
+            :class="{'isReverse':reverse['expiryDate'],'opacity':resortItem!=='expiryDate'}"
+            >
+                <i class=" fas fa-angle-up text-success"></i>
+            </span>
         </th>
       </tr>
-      <tr v-for="item in data">
+      <tr v-for="item in resortData">
         <td>{{ item.name }}</td>
         <td>{{ item.price }}</td>
         <td>{{ item.expiryDate }}</td>
@@ -180,13 +191,30 @@ var app = new Vue({
         expiryDate: 200
       }
     ],
-    reverse:false,
+    // reverse:false,
+    resortItem:'price',
+    reverse:{
+        price:false,
+        expiryDate:false,
+    },
   },
   // 請在此撰寫 JavaScript
   computed: {
-      resortData()[
-          if()
-      ]
+      resortData(){
+            const vm = this;
+            // if(vm.reverse){
+                return vm.data.sort(function(a,b){
+                    a=a[vm.resortItem];
+                    b=b[vm.resortItem];
+                    if(!vm.reverse[vm.resortItem]){
+                        return a - b;
+                    }else{
+                        return b - a;
+                    }
+                    
+                })
+            // }
+      }
   }
 });
 </script>
@@ -203,10 +231,16 @@ var app = new Vue({
 .icon {
   display: inline-block;
 }
-.icon.inverse {
+/* .icon.inverse { */
+.icon.isReverse {
   transform: rotate(180deg)
 }
+.opacity{
+    opacity: 0;
+}
 </style>
+
+
 
  
         </div>
