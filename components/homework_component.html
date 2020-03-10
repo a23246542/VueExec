@@ -233,7 +233,7 @@
                                 this.$emit('selectEmit',city);
                             },
                             filterCity(){
-                                console.log(this.filter);
+                                // console.log(this.filter);
                                 this.$emit('filteremit',this.filter)
                             }
                         }
@@ -311,7 +311,7 @@
                             class="card"
                             :class="statusColor(item.status)"
                           
-                            v-for="(item,index) in filterCityList" :key = index
+                            v-for="(item,index) in filterCityList" :key = item.SiteName
                             >
                                 <div class="card-header">{{item.County}} - {{item.SiteName}}
                                     <a href="#" class="float-right"
@@ -329,7 +329,7 @@
                                         ></i> -->
 
                                         <i v-if="!item.staredStatus" class="far fa-star" title="空心"></i>
-                                        <i v-else class="fas fa-star" title="實心"></i>
+                                        <!-- <i v-else class="fas fa-star" title="實心"></i> -->
                                         <!-- <i v-show="!item.staredStatus" class="far fa-star" title="空心"></i>
                                         <i v-show="item.staredStatus" class="fas fa-star" title="實心"></i> -->
                                     </a>
@@ -351,16 +351,16 @@
                     
                     Vue.component('city-list', {
                             template: "#cityList",
-                            props: ['cityList','filterCityList'],
+                            props: ['filterCityList'],
                             data() {
                                 return {
-                                    cityData:this.cityList,//??
-                                    
+                                    cityData1:this.filterCityList,//??
                                 }
                             },
                             methods: {
-                                starCity(item){
-                                    this.$emit('staremit',item);
+                                starCity(starItem){
+                                    console.log(starItem.staredStatus);
+                                    this.$emit('staremit',starItem);
                                 },
                                 statusColor(status){
                                     switch(status) {
@@ -417,10 +417,19 @@
 
                                 // 使用 jQuery ajax
                                 $.get(api).then(function (response) {
-                                    vm.data = response;
+                                    let newData =[...response];
+                                    newData.forEach(function(item,index){
+                                        item.staredStatus=false;
+                                    })
+                                    vm.data = newData;
+                                    // vm.data = response.map(function(item,index){
+                                        // return item.staredStatus=false;
+                                        // newData = 
+                                    // });
                                     vm.data.forEach(function(item,index,array){
                                     
                                     // item.staredStatus="false";
+                                    // item.staredStatus=false;
                                     // vm.$set('item',staredStatus,false);
                                     // vm.$set(this.data,'item',{
                                     //     staredStatus:false
@@ -431,7 +440,8 @@
                                     // vm.$set(vm.data.item,'staredStatus',false);
                                     // vm.$set(item,'staredStatus',false);
                                     // vm.$set(vm.data,index,{'staredStatus':false});
-                                    vm.$set(vm.data[index],'staredStatus',false);
+                                    // vm.$set(item,'staredStatus',false);
+                                    // vm.$set(vm.data[index],'staredStatus',false);
 
                                     if(item.AQI<=50){
                                         item.status = "良好";
@@ -464,17 +474,25 @@
                                 
                             },
                             starCity(staredItem){
-
-                                if(this.stared.indexOf(staredItem)==-1){
-                                    this.stared.push(staredItem)
-
-                                    staredItem.staredStatus = true;
-                                    
-                                }else{
-                                    let position = this.stared.indexOf(staredItem);
-                                    this.stared.splice(position,1);
-                                    staredItem.staredStatus = false;
-                                }
+                                const vm = this;
+                                const starIndex = vm.data.indexOf(staredItem);
+                                console.log(staredItem);//還沒改為什麼就變了
+                                console.log(starIndex);
+                                window.setTimeout(function(){
+                                        if(vm.stared.indexOf(staredItem)==-1){
+                                            vm.stared.push(staredItem)
+                                            // staredItem.staredStatus = true;
+                                            vm.$set(vm.data[starIndex],'staredStatus',true);
+                                            
+                                        }else{
+                                            let position = vm.stared.indexOf(staredItem);
+                                            vm.stared.splice(position,1);
+                                            // staredItem.staredStatus = false;
+                                            vm.$set(vm.data[starIndex],'staredStatus',false);
+                                            
+                                        }
+                                },3000)
+                               
                             },
                             removeStar(removeItem){
                                 const vm = this;

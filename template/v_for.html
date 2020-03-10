@@ -163,7 +163,7 @@
   <h4>v-for 與 v-if</h4>
   <p>請加上 v-if 判斷式</p>
   <ul>
-    <li v-for="(item, key) in arrayData">
+    <li v-for="(item, key) in arrayData" v-if="item.age>18">
       {{ key }} - {{ item.name }} {{ item.age }} 歲
     </li>
   </ul>
@@ -171,7 +171,7 @@
   <h4>v-for 與 元件</h4>
   <p>講師說明</p>
   <ul>
-    <list-item :item="item" v-for="(item, key) in arrayData"></list-item>
+    <list-item :item="item" v-for="(item, key) in arrayData" :key=item.name></list-item>
   </ul>
   <p>注意：現在建議元件使用 v-for 都加上 key。<a href="https://cn.vuejs.org/v2/guide/list.html#%E4%B8%80%E4%B8%AA%E7%BB%84%E4%BB%B6%E7%9A%84-v-for">參考</a></p>
 </div>
