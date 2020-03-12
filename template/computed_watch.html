@@ -123,7 +123,9 @@
   <p>3.使用 trigger 來觸發旋轉 box、並在三秒後改變回來</p>
   <div class="box" :class="{'rotate': trigger }"></div>
   <hr>
-  <button class="btn btn-outline-primary">Counter</button>
+  <button class="btn btn-outline-primary"
+  @click.prevent="trigger = !trigger"
+  >Counter</button>
 </div>
 
 <script>
@@ -147,6 +149,32 @@ var app = new Vue({
     filterText: '',
     trigger: false,
     newDate: 0
+  },
+  methods: {
+    closeTrigger(){
+      let vm = this;
+      if(vm.trigger){
+        window.setTimeout(function(){
+          vm.trigger = !vm.trigger;//試過沒有寫判斷式的化 會一直重複
+        },3000)
+      }
+      
+    }
+  },
+  computed: {
+    
+  },
+  watch: {
+    trigger:function(){
+      // let vm = this;
+      // if(vm.trigger){
+      //   window.setTimeout(function(){
+      //     vm.trigger = !vm.trigger;
+      //   },3000)
+      // }
+      this.closeTrigger();
+
+    }
   },
 
   // 解答
